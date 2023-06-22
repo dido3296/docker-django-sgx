@@ -1,0 +1,57 @@
+loader.entrypoint = "file:{{ gramine.libos }}"
+
+libos.entrypoint = "/usr/bin/python3.11"
+loader.argv_src_file = "file:/app/args.txt"  
+# or loader.insecure__use_cmdline_argv = true    INSECURE!
+
+loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}"
+loader.env.MALLOC_ARENA_MAX = "1"
+# or
+# loader.insecure__use_host_env = true
+# loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}:/usr/local/lib"
+
+loader.log_level = "error"
+# loader.log_file = "log.txt"
+
+# If eventfd()-sys-call is required
+# sys.insecure__allow_eventfd = true
+
+sgx.nonpie_binary = true
+
+fs.mounts = [
+    { path = "/tmp",              uri = "file:/tmp",        type = "tmpfs" },
+    { path = "/etc",              uri = "file:/etc" },
+    { path = "/usr",              uri = "file:/usr" },
+    { path = "/lib",              uri = "file:{{ gramine.runtimedir() }}" },
+    { path = "{{ arch_libdir }}", uri = "file:{{ arch_libdir }}" },
+    { path = "/app",              uri = "file:/app" },
+]
+
+sgx.rpc_thread_num = 16
+sgx.thread_num = 16
+sgx.enclave_size = "2G"
+
+sgx.debug = true
+sgx.isvprodid = 1
+sgx.isvsvn    = 1
+
+
+sgx.trusted_files = [
+    "file:{{ gramine.libos }}",
+    "file:{{ gramine.runtimedir() }}/",
+    "file:{{ arch_libdir }}/",
+
+    "file:/usr/bin/python3",
+    "file:/usr/lib/python3.11/",
+    
+    "file:/app/manage.py",
+    "file:/app/input.txt",
+    "file:/app/requirements.txt",
+    "file:/app/args.txt",
+]
+
+sgx.allowed_files = [
+    "file:/app/",
+    "file:/etc/hosts",
+    "file:/etc/resolv.conf",
+]
