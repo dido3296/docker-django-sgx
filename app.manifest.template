@@ -1,8 +1,8 @@
 loader.entrypoint = "file:{{ gramine.libos }}"
 
-libos.entrypoint = "/usr/bin/python3.11"
+libos.entrypoint = "/usr/bin/python3"
 loader.argv_src_file = "file:/app/args.txt"  
-# or loader.insecure__use_cmdline_argv = true    INSECURE!
+# or loader.insecure__use_cmdline_argv = true    INSECURE
 
 loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}"
 loader.env.MALLOC_ARENA_MAX = "1"
@@ -31,7 +31,7 @@ sgx.rpc_thread_num = 16
 sgx.thread_num = 16
 sgx.enclave_size = "2G"
 
-sgx.debug = true
+sgx.debug = false
 sgx.isvprodid = 1
 sgx.isvsvn    = 1
 
@@ -42,16 +42,13 @@ sgx.trusted_files = [
     "file:{{ arch_libdir }}/",
 
     "file:/usr/bin/python3",
-    "file:/usr/lib/python3.11/",
+    "file:/usr/lib/python3.10/",
+    "file:/usr/local/lib/python3.10/",
     
+    "file:/app/django_project/",
     "file:/app/manage.py",
     "file:/app/input.txt",
     "file:/app/requirements.txt",
     "file:/app/args.txt",
 ]
 
-sgx.allowed_files = [
-    "file:/app/",
-    "file:/etc/hosts",
-    "file:/etc/resolv.conf",
-]

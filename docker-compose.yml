@@ -10,6 +10,5 @@ services:
           - "8000:8000"
         devices:
           - "/dev/sgx_enclave:/dev/sgx_enclave"
-        volumes:
-          - ./input.txt:/app/input.txt
-        command: python manage.py runserver 0.0.0.0:8000
+        # command: /usr/bin/python3 manage.py runserver 0.0.0.0:8000
+        # command: /app/entrypoint.sh  
